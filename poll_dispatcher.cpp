@@ -1,6 +1,7 @@
 #include "poll_dispatcher.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 PollDispatcher::PollDispatcher(EventLoop* ev_loop) : Dispatcher(ev_loop), maxfd_(0), fds_(new struct pollfd[kMaxNode]) {
     name_ = "poll";

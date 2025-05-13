@@ -1,9 +1,11 @@
 #include "epoll_dispatcher.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 EpollDispatcher::EpollDispatcher(EventLoop* ev_loop) : Dispatcher(ev_loop) {
+    name_ = "epoll";
     epfd_ = epoll_create(10);
     if (epfd_ == -1) {
         perror("epoll_create");
