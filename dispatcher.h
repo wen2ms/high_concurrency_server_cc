@@ -19,7 +19,7 @@ class Dispatcher {
         channel_ = channel;
     }
 
-  private:
+  protected:
     std::string name_;
     Channel* channel_;
     EventLoop* ev_loop_;
