@@ -5,7 +5,7 @@
 #include "channel.h"
 #include "event_loop.h"
 
-struct EventLoop;
+class EventLoop;
 class Dispatcher {
   public:
     Dispatcher(EventLoop* ev_loop);
