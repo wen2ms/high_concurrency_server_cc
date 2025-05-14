@@ -37,6 +37,10 @@ class EventLoop {
 
     int read_message();
 
+    inline std::thread::id get_thread_id() {
+        return thread_id_;
+    }
+
   private:
     void task_wakeup();
 
