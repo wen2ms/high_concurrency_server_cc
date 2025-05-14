@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 SelectDispatcher::SelectDispatcher(EventLoop* ev_loop) : Dispatcher(ev_loop) {
+    name_ = "select";
     FD_ZERO(&read_set_);
     FD_ZERO(&write_set_);
 }

@@ -14,11 +14,11 @@
 
 EventLoop::EventLoop() : EventLoop(std::string()) {}
 
-EventLoop::EventLoop(const std::string thread_name) {
-    is_quit_ = true;
-    thread_id_ = std::this_thread::get_id();
-    thread_name_ = (thread_name == std::string() ? "main_thread" : thread_name);
-    dispatcher_ = new EpollDispatcher(this);
+EventLoop::EventLoop(const std::string thread_name)
+    : is_quit_(true),
+      thread_id_(std::this_thread::get_id()),
+      thread_name_((thread_name == std::string() ? "main_thread" : thread_name)),
+      dispatcher_(new EpollDispatcher(this)) {
     channel_map_.clear();
     int ret = socketpair(AF_UNIX, SOCK_STREAM, 0, socket_pair_);
     if (ret == -1) {
