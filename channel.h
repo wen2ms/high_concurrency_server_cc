@@ -1,6 +1,8 @@
 #pragma once
 
-using handle_func = int (*)(void*);
+#include <functional>
+
+// using handle_func = int (*)(void*);
 
 enum class FDEvent {
     kTimeout = 0x01,
@@ -10,7 +12,8 @@ enum class FDEvent {
 
 class Channel {
   public:
-    Channel(int fd, int events, handle_func read_func, handle_func write_func, handle_func destroy_func, void* arg);
+    using handle_func = std::function<int(void*)>;
+    Channel(int fd, FDEvent events, handle_func read_func, handle_func write_func, handle_func destroy_func, void* arg);
 
     void write_event_enable(bool flag);
     bool is_write_event_enable();

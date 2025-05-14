@@ -29,13 +29,17 @@ class EventLoop {
     int run();
     int event_activate(int fd, int event);
     int add_task(Channel* channel, ElemType type);
-    int process_task();
+    int process_task_queue();
     int add(Channel* channel);
     int remove(Channel* channel);
     int modify(Channel* channel);
     int free_channel(Channel* channel);
 
+    int read_message();
+
   private:
+    void task_wakeup();
+
     bool is_quit_;
     Dispatcher* dispatcher_;
     std::queue<ChannelElement*> task_queue_;
@@ -43,5 +47,5 @@ class EventLoop {
     std::thread::id thread_id_;
     std::string thread_name_;
     std::mutex mutex_;
-    int socket_pair[2];
+    int socket_pair_[2];
 };
