@@ -90,10 +90,10 @@ int PollDispatcher::dispatch(int timeout) {
             continue;
         }
         if (fds_[i].revents & POLLIN) {
-            event_activate(ev_loop, fds_[i].fd, kReadEvent);
+            ev_loop_->event_activate(fds_[i].fd, static_cast<int>(FDEvent::kReadEvent));
         }
         if (fds_[i].revents & POLLOUT) {
-            event_activate(ev_loop, fds_[i].fd, kWriteEvent);
+            ev_loop_->event_activate(fds_[i].fd, static_cast<int>(FDEvent::kWriteEvent));
         }
     }
 

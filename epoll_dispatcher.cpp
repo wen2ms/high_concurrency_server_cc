@@ -57,10 +57,10 @@ int EpollDispatcher::dispatch(int timeout) {
             continue;
         }
         if (events & EPOLLIN) {
-            event_activate(ev_loop_, fd, kReadEvent);
+            ev_loop_->event_activate(fd, static_cast<int>(FDEvent::kReadEvent));
         }
         if (events & EPOLLOUT) {
-            event_activate(ev_loop_, fd, kWriteEvent);
+            ev_loop_->event_activate(fd, static_cast<int>(FDEvent::kWriteEvent));
         }
     }
 

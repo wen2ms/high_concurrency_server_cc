@@ -22,6 +22,15 @@ class Buffer {
     char* find_crlf();
     int send_data(int socket);
 
+    inline char* data() {
+        return data_ + read_pos_;
+    }
+
+    inline int read_pos_increase(int count) {
+        read_pos_ += count;
+        return read_pos_;
+    }
+
   private:
     char* data_;
     int capacity_;

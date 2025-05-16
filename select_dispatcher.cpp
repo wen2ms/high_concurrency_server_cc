@@ -45,10 +45,10 @@ int SelectDispatcher::dispatch(int timeout) {
     }
     for (int i = 0; i < kMaxSize; ++i) {
         if (FD_ISSET(i, &rdtmp)) {
-            event_activate(ev_loop, i, kReadEvent);
+            ev_loop_->event_activate(i, static_cast<int>(FDEvent::kReadEvent));
         }
         if (FD_ISSET(i, &wrtmp)) {
-            event_activate(ev_loop, i, kWriteEvent);
+            ev_loop_->event_activate(i, static_cast<int>(FDEvent::kWriteEvent));
         }
     }
 

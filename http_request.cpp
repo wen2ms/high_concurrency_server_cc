@@ -13,8 +13,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "tcp_connection.h"
 #include "log.h"
+#include "tcp_connection.h"
 
 HttpRequest::HttpRequest() {
     reset();
@@ -116,7 +116,7 @@ bool HttpRequest::parse_http_request(Buffer* read_buf, HttpResponse* response, B
         if (cur_status_ == ProcessingStatus::kParseReqDone) {
             process_http_request(response);
 
-            http_response_prepare_msg(response, send_buf, socket);
+            response->prepare_msg(send_buf, socket);
         }
     }
 
@@ -141,26 +141,22 @@ bool HttpRequest::process_http_request(HttpResponse* response) {
     struct stat st;
     int ret = stat(file, &st);
     if (ret == -1) {
-        strcpy(response->file_name, "404.html");
-        response->status_code = kNotFound;
-        strcpy(response->status_msg, "Not Found");
-        http_response_add_header(response, "Content-type", get_content_type(".html"));
-        response->send_data_func = send_file;
+        response->set_file_name("404.html");
+        response->set_status_code(StatusCode::kNotFound);
+        response->add_header("Content-type", get_content_type(".html"));
+        response->send_data_func_ = send_file;
         return true;
     }
 
-    strcpy(response->file_name, file);
-    response->status_code = kOK;
-    strcpy(response->status_msg, "OK");
+    response->set_file_name(file);
+    response->set_status_code(StatusCode::kOK);
     if (S_ISDIR(st.st_mode)) {
-        http_response_add_header(response, "Content-type", get_content_type(".html"));
-        response->send_data_func = send_dir;
+        response->add_header("Content-type", get_content_type(".html"));
+        response->send_data_func_ = send_dir;
     } else {
-        char tmp[12] = {0};
-        sprintf(tmp, "%ld", st.st_size);
-        http_response_add_header(response, "Content-type", get_content_type(file));
-        http_response_add_header(response, "Content-length", tmp);
-        response->send_data_func = send_file;
+        response->add_header("Content-type", get_content_type(file));
+        response->add_header( "Content-length", std::to_string(st.st_size));
+        response->send_data_func_ = send_file;
     }
 
     return true;
@@ -183,7 +179,7 @@ void HttpRequest::send_dir(const std::string& dir_name, Buffer* send_buf, int cf
         } else {
             sprintf(buf + strlen(buf), "<tr><td><a href=\"%s\">%s</a></td><td>%ld</td></tr>", name, name, st.st_size);
         }
-    
+
         send_buf->append_string(buf);
 #ifndef MSG_SEND_AUTO
         send_buf->send_data(cfd);

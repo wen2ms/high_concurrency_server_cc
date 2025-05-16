@@ -31,8 +31,8 @@ class HttpRequest {
     bool parse_request_header(Buffer* read_buf);
     bool parse_http_request(Buffer* read_buf, HttpResponse* response, Buffer* send_buf, int socket);
     bool process_http_request(HttpResponse* response);
-    void send_dir(const std::string& dir_name, Buffer* send_buf, int cfd);
-    void send_file(const std::string& file_name, Buffer* send_buf, int cfd);
+    static void send_dir(const std::string& dir_name, Buffer* send_buf, int cfd);
+    static void send_file(const std::string& file_name, Buffer* send_buf, int cfd);
 
     inline void set_method(const std::string& method) {
         method_ = method;
