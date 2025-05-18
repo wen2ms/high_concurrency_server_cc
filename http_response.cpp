@@ -5,11 +5,8 @@
 #include "log.h"
 #include "tcp_connection.h"
 
-HttpResponse::HttpResponse() {
-    status_code_ = StatusCode::kUnknown;
+HttpResponse::HttpResponse() : status_code_(StatusCode::kUnknown), file_name_(std::string()), send_data_func_(nullptr) {
     headers_.clear();
-    file_name_ = std::string();
-    send_data_func_ = nullptr;
 }
 
 HttpResponse::~HttpResponse() {}
