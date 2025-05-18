@@ -55,7 +55,7 @@ int TcpServer::accept_connection(void* arg) {
 
     int cfd = accept(server->lfd_, NULL, NULL);
     EventLoop* ev_loop = server->thread_pool_->take_worker_event_loop();
-    tcp_connection_init(cfd, ev_loop);
+    TcpConnection* conn = new TcpConnection(cfd, ev_loop);
 
     return 0;
 }
