@@ -27,7 +27,7 @@ TcpConnection::~TcpConnection() {
         delete response_;
     }
 
-    DEBUG("Disconnect and release resources, conn_name: %s", name_);
+    DEBUG("Disconnect and release resources, conn_name: %s", name_.data());
 }
 
 int TcpConnection::process_read(void* arg) {
@@ -45,7 +45,7 @@ int TcpConnection::process_read(void* arg) {
 #endif
         bool flag = conn->request_->parse_http_request(conn->read_buf_, conn->response_, conn->write_buf_, socket);
         if (!flag) {
-            char* err_msg = "HTTP/1.1 400 Bad Request\r\n\r\n";
+            const char* err_msg = "HTTP/1.1 400 Bad Request\r\n\r\n";
             conn->write_buf_->append_string(err_msg);
         }
     } else {

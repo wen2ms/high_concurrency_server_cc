@@ -26,12 +26,12 @@ void Buffer::extend_room(int size) {
         read_pos_ = 0;
         write_pos_ = readable;
     } else {
-        void* temp = realloc(data_, capacity_ + size);
+        char* temp = static_cast<char*>(realloc(data_, capacity_ + size));
         if (temp == NULL) {
             return;
         }
         memset(temp + capacity_, 0, size);
-        data_ = static_cast<char*>(temp);
+        data_ = temp;
         capacity_ += size;
     }
 }

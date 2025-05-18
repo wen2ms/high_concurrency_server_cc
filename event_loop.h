@@ -20,6 +20,8 @@ struct ChannelElement {
     Channel* channel;
 };
 
+class Dispatcher;
+
 class EventLoop {
   public:
     EventLoop();

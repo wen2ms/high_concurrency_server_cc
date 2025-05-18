@@ -10,7 +10,7 @@ WorkerThread::~WorkerThread() {
 }
 
 void WorkerThread::run() {
-    thread_ = new std::thread(&sub_thread_running, this);
+    thread_ = new std::thread(&WorkerThread::sub_thread_running, this);
     std::unique_lock<std::mutex> locker(mutex_);
     while (ev_loop_ != nullptr) {
         cond_.wait(locker);
