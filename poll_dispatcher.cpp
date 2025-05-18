@@ -3,8 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-PollDispatcher::PollDispatcher(EventLoop* ev_loop) : Dispatcher(ev_loop), maxfd_(0), fds_(new struct pollfd[kMaxNode]) {
+PollDispatcher::PollDispatcher(EventLoop* ev_loop) : Dispatcher(ev_loop), maxfd_(0) {
     name_ = "poll";
+    fds_ = new struct pollfd[kMaxNode];
     for (int i = 0; i < kMaxNode; ++i) {
         fds_[i].fd = -1;
         fds_[i].events = 0;
@@ -86,7 +87,7 @@ int PollDispatcher::dispatch(int timeout) {
         exit(0);
     }
     for (int i = 0; i <= maxfd_; ++i) {
-        if (fds_[i].revents == -1) {
+        if (fds_[i].fd == -1) {
             continue;
         }
         if (fds_[i].revents & POLLIN) {

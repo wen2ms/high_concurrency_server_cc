@@ -28,7 +28,7 @@ int SelectDispatcher::remove() {
 
 int SelectDispatcher::modify() {
     set_fd_set();
-    clear_fd_set();
+    // clear_fd_set();
     return 0;
 }
 

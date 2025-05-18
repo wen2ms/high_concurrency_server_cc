@@ -49,7 +49,7 @@ bool HttpRequest::parse_request_line(Buffer* read_buf) {
     char* start = read_buf->data();
     int line_size = end - start;
 
-    if (line_size) {
+    if (line_size > 0) {
         auto method_func = std::bind(&HttpRequest::set_method, this, std::placeholders::_1);
         start = split_request_line(start, end, " ", method_func);
 
@@ -60,7 +60,7 @@ bool HttpRequest::parse_request_line(Buffer* read_buf) {
         split_request_line(start, end, nullptr, version_func);
 
         read_buf->read_pos_increase(line_size + 2);
-        set_status(ProcessingStatus::kParseReqBody);
+        set_status(ProcessingStatus::kParseReqHeaders);
         return true;
     }
 
