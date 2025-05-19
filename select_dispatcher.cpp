@@ -27,8 +27,15 @@ int SelectDispatcher::remove() {
 }
 
 int SelectDispatcher::modify() {
-    set_fd_set();
-    // clear_fd_set();
+    if (channel_->get_event() & static_cast<int>(FDEvent::kReadEvent)) {
+        FD_SET(channel_->get_socket(), &read_set_);
+        FD_CLR(channel_->get_socket(), &write_set_);
+    }
+    if (channel_->get_event() & static_cast<int>(FDEvent::kWriteEvent)) {
+        FD_SET(channel_->get_socket(), &write_set_);
+        FD_CLR(channel_->get_socket(), &read_set_);
+    }
+    
     return 0;
 }
 
